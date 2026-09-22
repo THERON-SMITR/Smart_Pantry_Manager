@@ -9,7 +9,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.smartpantrymanager"
+        applicationId = "com.example.smartpantrymanager1"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

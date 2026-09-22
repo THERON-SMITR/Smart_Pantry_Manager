@@ -11,30 +11,30 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class SuggestedRecipesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_suggested_recipes);
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         setUpBottomNavigation();
     }
 
     private void setUpBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        // This screen IS the Pantry tab, so mark it selected without triggering the listener.
-        bottomNav.setSelectedItemId(R.id.nav_pantry);
+        // This screen is the Suggestions Page
+        bottomNav.setSelectedItemId(R.id.nav_suggestions);
 
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_suggestions) {
+            if (id == R.id.nav_pantry) {
                 openScreen(SuggestedRecipesActivity.class);
                 return true;
             } else if (id == R.id.nav_settings) {
