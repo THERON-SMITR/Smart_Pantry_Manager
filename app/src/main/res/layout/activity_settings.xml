@@ -90,48 +90,6 @@
                 android:layout_height="48dp"
                 android:contentDescription="@string/settings_alert_days_label" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:background="?attr/colorOutlineVariant" />
-
-            <!-- Section: units -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_section_units"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorPrimary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/settings_units_summary"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant" />
-
-            <RadioGroup
-                android:id="@+id/radioGroupUnits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/radioMetric"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="@string/settings_units_metric" />
-
-                <RadioButton
-                    android:id="@+id/radioImperial"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="@string/settings_units_imperial" />
-            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 

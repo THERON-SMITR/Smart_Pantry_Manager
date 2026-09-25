@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.smartpantrymanager.models.PantryItem;
+import com.example.smartpantrymanager.models.Recipe;
+import com.example.smartpantrymanager.models.RecipeIngredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE recipes(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT NOT NULL, " +
-                "method REAL NOT NULL)");
+                "method TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE recipe_ingredients(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -264,6 +266,85 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String unit = cursor.getString(cursor.getColumnIndexOrThrow("unit"));
         String expiryDate = cursor.getString(cursor.getColumnIndexOrThrow("expiry_date"));
         return new PantryItem(id, name, quantity, unit, expiryDate);
+    }
+
+    // ---------- Recipes (read-only: seeded once, never edited by the user) ----------
+
+    /** All recipes, each with its full ingredient list already loaded. */
+    public List<Recipe> getAllRecipesWithIngredients() {
+        List<Recipe> recipes = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query("recipes", null, null, null, null, null, "name ASC");
+
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String method = cursor.getString(cursor.getColumnIndexOrThrow("method"));
+            recipes.add(new Recipe(id, name, method, getIngredientsForRecipe(db, id)));
+        }
+        cursor.close();
+        return recipes;
+    }
+
+    /** One recipe (with its ingredients) by id, or null if it no longer exists. */
+    public Recipe getRecipeById(long id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query("recipes", null, "id = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+
+        Recipe recipe = null;
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String method = cursor.getString(cursor.getColumnIndexOrThrow("method"));
+            recipe = new Recipe(id, name, method, getIngredientsForRecipe(db, id));
+        }
+        cursor.close();
+        return recipe;
+    }
+
+    private List<RecipeIngredient> getIngredientsForRecipe(SQLiteDatabase db, long recipeId) {
+        List<RecipeIngredient> ingredients = new ArrayList<>();
+        Cursor cursor = db.query("recipe_ingredients", null, "recipe_id = ?",
+                new String[]{String.valueOf(recipeId)}, null, null, null);
+
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("ingredient_name"));
+            double quantity = cursor.getDouble(cursor.getColumnIndexOrThrow("quantity"));
+            String unit = cursor.getString(cursor.getColumnIndexOrThrow("unit"));
+            ingredients.add(new RecipeIngredient(id, recipeId, name, quantity, unit));
+        }
+        cursor.close();
+        return ingredients;
+    }
+
+    // ---------- Settings (key/value) ----------
+
+    /** Reads one setting's value, or defaultValue if the key has never been saved. */
+    public String getSetting(String key, String defaultValue) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query("settings", new String[]{"setting_value"},
+                "setting_key = ?", new String[]{key}, null, null, null);
+
+        String value = defaultValue;
+        if (cursor.moveToFirst()) {
+            value = cursor.getString(cursor.getColumnIndexOrThrow("setting_value"));
+        }
+        cursor.close();
+        return value;
+    }
+
+    /** Saves one setting, updating the existing row if the key is already present. */
+    public void setSetting(String key, String value) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("setting_value", value);
+
+        int rowsUpdated = db.update("settings", values, "setting_key = ?", new String[]{key});
+        if (rowsUpdated == 0) {
+            values.put("setting_key", key);
+            db.insert("settings", null, values);
+        }
     }
 
 }
