@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Units offered on the Add/Edit ingredient form (same units the seeded recipes use). -->
+    <string-array name="unit_options">
+        <item>g</item>
+        <item>kg</item>
+        <item>ml</item>
+        <item>l</item>
+        <item>unit</item>
+        <item>slice</item>
+        <item>clove</item>
+        <item>pinch</item>
+    </string-array>
+
+    <!-- Labels shown in the "warn me before expiry" spinner. -->
+    <string-array name="alert_days_entries">
+        <item>1 day before</item>
+        <item>2 days before</item>
+        <item>3 days before</item>
+        <item>5 days before</item>
+        <item>7 days before</item>
+    </string-array>
+
+    <!-- Matching values (in days), same order as the entries above. -->
+    <integer-array name="alert_days_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+    </integer-array>
+</resources>
