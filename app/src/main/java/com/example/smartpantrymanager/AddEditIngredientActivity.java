@@ -21,10 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import java.util.Locale;
 
-/**
- * Form for adding a new pantry ingredient, or editing an existing one when an
- * EXTRA_ITEM_ID is passed in through the Intent.
- */
+/** Form for adding or editing a pantry ingredient. **/
 public class AddEditIngredientActivity extends AppCompatActivity {
 
     /** Intent extra holding the id of the item being edited (absent when adding). */
@@ -79,6 +76,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         findViewById(R.id.buttonSave).setOnClickListener(v -> saveIngredient());
         findViewById(R.id.buttonCancel).setOnClickListener(v -> finish());
     }
+
 
     private void setUpUnitSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(

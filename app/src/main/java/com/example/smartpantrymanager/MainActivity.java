@@ -21,12 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-/**
- * Pantry screen: lists every ingredient stored in the database, with a + button to add
- * a new one, tap-to-edit and a bin button to delete.
- */
+/** Pantry screen: List all pantry items **/
 public class MainActivity extends AppCompatActivity {
-
     private DatabaseHelper dbHelper;
     private PantryAdapter adapter;
     private RecyclerView recyclerPantry;
