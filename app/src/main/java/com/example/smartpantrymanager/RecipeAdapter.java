@@ -13,24 +13,18 @@ import com.example.smartpantrymanager.models.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adapter that turns a list of Recipe objects into rows (item_recipe.xml) for the
- * RecyclerView on the Suggested Recipes screen.
- */
+/** Adapter used to create rows from the list of recipes objects **/
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
-
     public interface OnRecipeClickListener {
         void onRecipeClick(Recipe recipe);
     }
-
     private final List<Recipe> recipes = new ArrayList<>();
     private final OnRecipeClickListener listener;
-
     public RecipeAdapter(OnRecipeClickListener listener) {
         this.listener = listener;
     }
 
-    /** Replaces the data and refreshes the list. */
+    /** Replaces the data and refreshes the list. **/
     public void setRecipes(List<Recipe> newRecipes) {
         recipes.clear();
         recipes.addAll(newRecipes);

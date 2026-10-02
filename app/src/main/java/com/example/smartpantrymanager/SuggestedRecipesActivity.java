@@ -20,13 +20,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-/**
- * Suggested Recipes screen: shows only the recipes the user can make right now, using
- * the strict-matching rule in RecipeMatcher - every ingredient a recipe needs must be
- * in the pantry, in at least the required quantity.
- */
+/** Suggested Recipes screen: used to show suggestion recipes base on the ingredients **/
 public class SuggestedRecipesActivity extends AppCompatActivity {
-
     private DatabaseHelper dbHelper;
     private RecipeAdapter adapter;
     private RecyclerView recyclerSuggestions;
@@ -51,7 +46,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         setUpBottomNavigation();
     }
 
-    /** Recheck the matches every time this screen is shown - the pantry may have changed. */
+    /** Revalidate the  suggestions everytime this screen is reloaded - the pantry may have changed. **/
     @Override
     protected void onResume() {
         super.onResume();
@@ -68,7 +63,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         recyclerSuggestions.setAdapter(adapter);
     }
 
-    /** Loads the pantry and every recipe, then keeps only the ones that strictly match. */
+    /** Loads the pantry and every recipe, then keeps only the ones that strictly match. **/
     private void loadSuggestions() {
         List<PantryItem> pantryItems = dbHelper.getAllPantryItems();
         List<Recipe> allRecipes = dbHelper.getAllRecipesWithIngredients();
@@ -85,6 +80,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
     private void setUpBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        /** Highlights the suggestions tab (selected) without triggering the listener. **/
         bottomNav.setSelectedItemId(R.id.nav_suggestions);
 
         bottomNav.setOnItemSelectedListener(item -> {
@@ -96,10 +92,12 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
                 openScreen(SettingsActivity.class);
                 return true;
             }
-            return true; // Already on Suggestions.
+            /** Already on Suggestions. **/
+            return true;
         });
     }
 
+    /** Helper used to navigate the tabs without stacking up duplicate screens. **/
     private void openScreen(Class<?> target) {
         Intent intent = new Intent(this, target);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
