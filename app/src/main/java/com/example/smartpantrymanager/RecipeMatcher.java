@@ -22,10 +22,10 @@ import java.util.Map;
  *    plural normalisation ("tomato" vs "tomatoes");
  *  - quantities are compared after converting compatible units to a common base
  *    (e.g. 1 kg in the pantry covers a recipe that needs 500 g).
- */
+ **/
 public class RecipeMatcher {
 
-    // Units that can be converted to a common base for comparison.
+    /** Units that can be converted to a common base for comparison. **/
     private static final Map<String, Double> GRAMS = new HashMap<>();
     private static final Map<String, Double> MILLILITRES = new HashMap<>();
 
@@ -37,7 +37,7 @@ public class RecipeMatcher {
         MILLILITRES.put("l", 1000.0);
     }
 
-    /** Filters allRecipes down to only the ones the current pantry can make right now. */
+    /** Filters allRecipes down to only the ones the current pantry can make right now. **/
     public List<Recipe> getSuggestedRecipes(List<Recipe> allRecipes, List<PantryItem> pantryItems) {
         List<Recipe> suggestions = new ArrayList<>();
         for (Recipe recipe : allRecipes) {
@@ -48,11 +48,12 @@ public class RecipeMatcher {
         return suggestions;
     }
 
-    /** True only if every ingredient the recipe needs is available in enough quantity. */
+    /** True only if every ingredient the recipe needs is available in enough quantity. **/
     public boolean matches(Recipe recipe, List<PantryItem> pantryItems) {
         for (RecipeIngredient required : recipe.getIngredients()) {
             if (!pantryHasEnough(required, pantryItems)) {
-                return false; // One missing/short ingredient disqualifies the whole recipe.
+                /** One missing/short ingredient disqualifies the whole recipe. **/
+                return false;
             }
         }
         return true;
@@ -68,26 +69,30 @@ public class RecipeMatcher {
                         required.getQuantity(), required.getUnit());
             }
         }
-        return false; // Ingredient is not in the pantry at all.
+        /** Ingredient is not in the pantry at all. **/
+        return false;
     }
 
-    /** Lower-cases and strips a simple plural ending so "tomato"/"tomatoes" match. */
+    /** Lower-cases and strips a simple plural ending so "tomato"/"tomatoes" match. **/
     private String normalise(String ingredientName) {
         String name = ingredientName.trim().toLowerCase(Locale.ROOT);
 
         if (name.endsWith("ies") && name.length() > 4) {
-            return name.substring(0, name.length() - 3) + "y"; // berries -> berry
+            /** berries -> berry **/
+            return name.substring(0, name.length() - 3) + "y";
         }
         if (name.endsWith("oes") && name.length() > 4) {
-            return name.substring(0, name.length() - 2); // tomatoes -> tomato
+            /** tomatoes -> tomato **/
+            return name.substring(0, name.length() - 2);
         }
         if (name.endsWith("s") && !name.endsWith("ss") && name.length() > 3) {
-            return name.substring(0, name.length() - 1); // onions -> onion, eggs -> egg
+            /** onions -> onion, eggs -> egg **/
+            return name.substring(0, name.length() - 1);
         }
         return name;
     }
 
-    /** True if the pantry quantity (in its unit) covers the required quantity (in its unit). */
+    /** True if the pantry quantity (in its unit) covers the required quantity (in its unit). **/
     private boolean hasEnoughQuantity(double pantryQty, String pantryUnit,
                                        double requiredQty, String requiredUnit) {
         String pUnit = pantryUnit.trim().toLowerCase(Locale.ROOT);
@@ -109,7 +114,7 @@ public class RecipeMatcher {
             return pantryQty * pantryMl >= requiredQty * requiredMl;
         }
 
-        // Units are not directly comparable (e.g. "clove" vs "unit") - cannot confirm enough.
+        /** Units are not directly comparable (e.g. "clove" vs "unit") - cannot confirm enough. **/
         return false;
     }
 }

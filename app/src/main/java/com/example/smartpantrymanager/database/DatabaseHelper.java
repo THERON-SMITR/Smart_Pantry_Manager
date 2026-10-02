@@ -61,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS pantry_items");
         onCreate(db);
     }
-    // ---------- Recipes ----------
+    /** ---------- Recipes ---------- **/
     /** Creating the recipes in the database **/
     private long insertRecipe(SQLiteDatabase db, String name, String method) {
         ContentValues values = new ContentValues();
@@ -129,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return ingredients;
     }
 
-    // ---------- Pantry Items ----------
+    /** ---------- Pantry Items ---------- **/
     /** Creating a new pantry item **/
     public long addPantryItem(PantryItem item) {
         SQLiteDatabase db = getWritableDatabase();
@@ -200,8 +200,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-    // ---------- Settings ----------
-    /** Reads one setting's value, or defaultValue if the key has never been saved. */
+    /** ---------- Settings ---------- **/
+    /** Reads one setting's value, or defaultValue if the key has never been saved. **/
     public String getSetting(String key, String defaultValue) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query("settings", new String[]{"setting_value"},
@@ -215,7 +215,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return value;
     }
 
-    /** Saves one setting, updating the existing row if the key is already present. */
+    /** Saves one setting, updating the existing row if the key is already present. **/
     public void setSetting(String key, String value) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -228,7 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
-    // ---------- Recipe Seed ----------
+    /** ---------- Recipe Seed ---------- **/
     /** Seed  to add 20 recipes to the database **/
     private void seedRecipes(SQLiteDatabase db) {
         long id;

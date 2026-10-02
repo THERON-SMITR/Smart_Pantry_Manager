@@ -5,7 +5,8 @@ public class PantryItem {
     private String name;
     private double quantity;
     private String unit;
-    private String expiryDate; // Nullable if the expiry date is not set
+    /** Nullable if the expiry date is not set **/
+    private String expiryDate;
 
     public PantryItem(long id, String name, double quantity, String unit, String expiryDate){
         this.id = id;

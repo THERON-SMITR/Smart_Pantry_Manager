@@ -6,7 +6,8 @@ import java.util.List;
 public class Recipe {
     private long id;
     private String name;
-    private String method; // preparation steps, as one block of text
+    /** preparation steps, as one block of text **/
+    private String method;
     private List<RecipeIngredient> ingredients;
 
     public Recipe(long id, String name, String method, List<RecipeIngredient> ingredients) {
@@ -16,7 +17,7 @@ public class Recipe {
         this.ingredients = ingredients != null ? ingredients : new ArrayList<>();
     }
 
-    // Convenience constructor for a recipe being seeded, before it has an id or ingredients loaded.
+    /** Convenience constructor for a recipe being seeded, before it has an id or ingredients loaded. **/
     public Recipe(String name, String method) {
         this(0, name, method, new ArrayList<>());
     }

@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Pantry borders: orange = expiring soon, red = already expired. -->
+    <color name="expiry_warning">#FF9800</color>
+    <color name="expiry_expired">#D32F2F</color>
 </resources>
