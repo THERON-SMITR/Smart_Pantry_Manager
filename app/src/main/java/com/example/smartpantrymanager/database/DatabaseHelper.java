@@ -61,8 +61,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS pantry_items");
         onCreate(db);
     }
-    /** ---------- Recipes ---------- **/
-    /** Creating the recipes in the database **/
+    /* ---------- Recipes ---------- **/
+    /* Creating the recipes in the database **/
     private long insertRecipe(SQLiteDatabase db, String name, String method) {
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -70,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return db.insert("recipes", null, values);
     }
 
-    /** Linking ingredients to the recipes using the recipe id **/
+    /* Linking ingredients to the recipes using the recipe id **/
     private void insertRecipeIngredient(SQLiteDatabase db, long recipeId, String name, double quantity, String unit) {
         ContentValues values = new ContentValues();
         values.put("recipe_id", recipeId);
@@ -80,7 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.insert("recipe_ingredients", null, values);
     }
 
-    /** Reading all recipes from the database **/
+    /* Reading all recipes from the database **/
     public List<Recipe> getAllRecipesWithIngredients() {
         List<Recipe> recipes = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -96,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return recipes;
     }
 
-    /** Reading a recipes from the database using id **/
+    /* Reading a recipes from the database using id **/
     public Recipe getRecipeById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query("recipes", null, "id = ?",
@@ -112,7 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return recipe;
     }
 
-    /** Reading a recipe ingredients from the database using the recipe id **/
+    /* Reading a recipe ingredients from the database using the recipe id **/
     private List<RecipeIngredient> getIngredientsForRecipe(SQLiteDatabase db, long recipeId) {
         List<RecipeIngredient> ingredients = new ArrayList<>();
         Cursor cursor = db.query("recipe_ingredients", null, "recipe_id = ?",
@@ -129,8 +129,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return ingredients;
     }
 
-    /** ---------- Pantry Items ---------- **/
-    /** Creating a new pantry item **/
+    /* ---------- Pantry Items ---------- **/
+    /* Creating a new pantry item **/
     public long addPantryItem(PantryItem item) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -141,7 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return db.insert("pantry_items", null, values);
     }
 
-    /** Reading all pantry item **/
+    /* Reading all pantry item **/
     public List<PantryItem> getAllPantryItems() {
         List<PantryItem> items = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -154,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return items;
     }
 
-    /** Reading a pantry item using the item id **/
+    /* Reading a pantry item using the item id **/
     public PantryItem getPantryItemById(long id) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query("pantry_items", null, "id = ?",
@@ -168,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return item;
     }
 
-    /** Updating a pantry item using the item id **/
+    /* Updating a pantry item using the item id **/
     public int updatePantryItem(PantryItem item) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -181,15 +181,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 new String[]{String.valueOf(item.getId())});
     }
 
-    /**
-     * Delete a pantry item using the item
-     **/
+    /* Delete a pantry item using the item **/
     public void deletePantryItem(long id) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("pantry_items", "id = ?", new String[]{String.valueOf(id)});
     }
 
-    /** Raw DB data helper - Converts to usable Java object **/
+    /* Raw DB data helper - Converts to usable Java object **/
     private PantryItem mapCursorToPantryItem(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
         String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
@@ -200,7 +198,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-    /** ---------- Settings ---------- **/
+    /* ---------- Settings ---------- **/
     /** Reads one setting's value, or defaultValue if the key has never been saved. **/
     public String getSetting(String key, String defaultValue) {
         SQLiteDatabase db = getReadableDatabase();
@@ -215,7 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return value;
     }
 
-    /** Saves one setting, updating the existing row if the key is already present. **/
+    /* Saves one setting, updating the existing row if the key is already present. **/
     public void setSetting(String key, String value) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -228,8 +226,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
-    /** ---------- Recipe Seed ---------- **/
-    /** Seed  to add 20 recipes to the database **/
+    /* ---------- Recipe Seed ---------- **/
+    /* Seed  to add 20 recipes to the database **/
     private void seedRecipes(SQLiteDatabase db) {
         long id;
 

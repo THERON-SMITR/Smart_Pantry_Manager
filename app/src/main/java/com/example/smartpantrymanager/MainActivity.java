@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-/** Pantry screen: List all pantry items **/
+/* Pantry screen: List all pantry items **/
 public class MainActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private AppPreferences preferences;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setUpBottomNavigation();
     }
 
-    /** Reload the screen every time we come back e.g. after saving on the Add/Edit screen. **/
+    /* Reload the screen every time we come back e.g. after saving on the Add/Edit screen. **/
     @Override
     protected void onResume() {
         super.onResume();
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PantryAdapter(new PantryAdapter.OnItemActionListener() {
             @Override
             public void onEdit(PantryItem item) {
-                /** Passing the id so the form knows it is editing rather than adding. **/
+                /* Passing the id so the form knows it is editing rather than adding. **/
                 Intent intent = new Intent(MainActivity.this, AddEditIngredientActivity.class);
                 intent.putExtra(AddEditIngredientActivity.EXTRA_ITEM_ID, item.getId());
                 startActivity(intent);
@@ -82,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AddEditIngredientActivity.class)));
     }
 
-    /** Reads all items from the database and shows either the list or the empty message. **/
+    /* Reads all items from the database and shows either the list or the empty message. **/
     private void loadPantry() {
         List<PantryItem> items = dbHelper.getAllPantryItems();
 
-        /** Re-read the Settings values each time, so a change on the Settings screen applies on return. **/
+        /* Re-read the Settings values each time, so a change on the Settings screen applies on return. **/
         adapter.setExpiryAlerts(preferences.isExpiryAlertsEnabled(), preferences.getExpiryAlertDays());
         adapter.setItems(items);
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        /** Highlights the pantry tab (selected) without triggering the listener. **/
+        /* Highlights the pantry tab (selected) without triggering the listener. **/
         bottomNav.setSelectedItemId(R.id.nav_pantry);
 
         bottomNav.setOnItemSelectedListener(item -> {
@@ -121,12 +121,12 @@ public class MainActivity extends AppCompatActivity {
                 openScreen(SettingsActivity.class);
                 return true;
             }
-            /** Already on Pantry. **/
+            /* Already on Pantry. **/
             return true;
         });
     }
 
-    /** Helper used to navigate the tabs without stacking up duplicate screens. **/
+    /* Helper used to navigate the tabs without stacking up duplicate screens. **/
     private void openScreen(Class<?> target) {
         Intent intent = new Intent(this, target);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

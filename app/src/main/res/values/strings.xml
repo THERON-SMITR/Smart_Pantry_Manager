@@ -34,6 +34,10 @@
     <!-- Suggested Recipes screen -->
     <string name="title_suggestions">Suggestions</string>
     <string name="no_recipes_match">No recipes match your pantry yet - add more ingredients</string>
+    <string name="tab_ready">Ready to cook</string>
+    <string name="tab_almost_there">Almost there</string>
+    <string name="no_almost_there">No recipes are one ingredient away</string>
+    <string name="missing_ingredient">Missing: %1$s</string>
     <plurals name="ingredient_count">
         <item quantity="one">%1$d ingredient</item>
         <item quantity="other">%1$d ingredients</item>

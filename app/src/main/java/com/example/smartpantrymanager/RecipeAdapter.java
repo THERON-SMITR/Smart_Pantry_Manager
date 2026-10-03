@@ -11,24 +11,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smartpantrymanager.models.Recipe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Adapter used to create rows from the list of recipes objects **/
+/* Adapter used to create rows from the list of recipes objects **/
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     public interface OnRecipeClickListener {
         void onRecipeClick(Recipe recipe);
     }
     private final List<Recipe> recipes = new ArrayList<>();
+    private final Map<Long, String> missingIngredients = new HashMap<>();
     private final OnRecipeClickListener listener;
     public RecipeAdapter(OnRecipeClickListener listener) {
         this.listener = listener;
     }
 
-    /** Replaces the data and refreshes the list. **/
+    /* Replaces the data and refreshes the list. **/
     public void setRecipes(List<Recipe> newRecipes) {
         recipes.clear();
         recipes.addAll(newRecipes);
         notifyDataSetChanged();
+    }
+
+    public void setMissingIngredients(Map<Long, String> missing) {
+        missingIngredients.clear();
+        missingIngredients.putAll(missing);
     }
 
     @NonNull
@@ -45,8 +53,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         int count = recipe.getIngredients().size();
 
         holder.textName.setText(recipe.getName());
-        holder.textCount.setText(holder.itemView.getContext().getResources()
-                .getQuantityString(R.plurals.ingredient_count, count, count));
+
+        String missing = missingIngredients.get(recipe.getId());
+        if (missing != null) {
+            holder.textCount.setText(holder.itemView.getContext()
+                    .getString(R.string.missing_ingredient, missing));
+        } else {
+            holder.textCount.setText(holder.itemView.getContext().getResources()
+                    .getQuantityString(R.plurals.ingredient_count, count, count));
+        }
 
         holder.itemView.setOnClickListener(v -> listener.onRecipeClick(recipe));
     }
