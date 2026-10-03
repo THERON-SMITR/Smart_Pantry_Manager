@@ -13,7 +13,10 @@ public class AppPreferences {
 
     private static final String KEY_ALERTS_ENABLED = "expiry_alerts_enabled";
     private static final String KEY_ALERT_DAYS = "expiry_alert_days";
+    private static final String KEY_UNITS = "units_preference";
 
+    public static final String UNITS_METRIC = "metric";
+    public static final String UNITS_IMPERIAL = "imperial";
     public static final int DEFAULT_ALERT_DAYS = 3;
 
     private final DatabaseHelper dbHelper;
@@ -43,5 +46,13 @@ public class AppPreferences {
 
     public void setExpiryAlertDays(int days) {
         dbHelper.setSetting(KEY_ALERT_DAYS, String.valueOf(days));
+    }
+
+    public String getUnits() {
+        return dbHelper.getSetting(KEY_UNITS, UNITS_METRIC);
+    }
+
+    public void setUnits(String units) {
+        dbHelper.setSetting(KEY_UNITS, units);
     }
 }
