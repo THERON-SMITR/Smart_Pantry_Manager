@@ -7,8 +7,8 @@ public class Recipe {
     private long id;
     private String name;
     /** preparation steps, as one block of text **/
-    private String method;
-    private List<RecipeIngredient> ingredients;
+    private final String method;
+    private final List<RecipeIngredient> ingredients;
 
     public Recipe(long id, String name, String method, List<RecipeIngredient> ingredients) {
         this.id = id;
@@ -29,10 +29,7 @@ public class Recipe {
     public void setName(String name) { this.name = name; }
 
     public String getMethod() { return method; }
-    public void setMethod(String method) { this.method = method; }
 
     public List<RecipeIngredient> getIngredients() { return ingredients; }
-    public void setIngredients(List<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
 
-    public void addIngredient(RecipeIngredient ingredient) { this.ingredients.add(ingredient); }
 }

@@ -17,13 +17,13 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-/** Settings screen: Enabling expiry alerts and warnings **/
+/* Settings screen: Enabling expiry alerts and warnings **/
 public class SettingsActivity extends AppCompatActivity {
     private AppPreferences preferences;
     private MaterialSwitch switchExpiryAlerts;
     private Spinner spinnerAlertDays;
     private RadioGroup radioGroupUnits;
-    /** The day counts that line up with the spinner entries (res/values/arrays.xml). **/
+    /* The day counts that line up with the spinner entries (res/values/arrays.xml). **/
     private int[] alertDayValues;
 
     @Override
@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
         setUpBottomNavigation();
     }
 
-    /** Fills the spinner with the "N days before" options. **/
+    /* Fills the spinner with the "N days before" options. **/
     private void setUpAlertDaysSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.alert_days_entries, android.R.layout.simple_spinner_item);
@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
         spinnerAlertDays.setAdapter(adapter);
     }
 
-    /** Shows the currently saved values in the controls (before listeners are attached). **/
+    /* Shows the currently saved values in the controls (before listeners are attached). **/
     private void loadSavedSettings() {
         switchExpiryAlerts.setChecked(preferences.isExpiryAlertsEnabled());
         spinnerAlertDays.setSelection(indexOfDays(preferences.getExpiryAlertDays()));
@@ -74,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void setUpListeners() {
         switchExpiryAlerts.setOnCheckedChangeListener((buttonView, isChecked) -> {
             preferences.setExpiryAlertsEnabled(isChecked);
-            /** The "days before" choice is meaningless while alerts are switched off. **/
+            /* The "days before" choice is meaningless while alerts are switched off. **/
             spinnerAlertDays.setEnabled(isChecked);
         });
 
@@ -86,7 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                /** Nothing to do: the previous value stays saved. **/
+                /* Nothing to do: the previous value stays saved. **/
             }
         });
 
@@ -99,10 +99,10 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    /** Bottom navigation: **/
+    /* Bottom navigation: **/
     private void setUpBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        /** Highlights the settings tab (selected) without triggering the listener. **/
+        /* Highlights the settings tab (selected) without triggering the listener. **/
         bottomNav.setSelectedItemId(R.id.nav_settings);
 
         bottomNav.setOnItemSelectedListener(item -> {
@@ -114,19 +114,19 @@ public class SettingsActivity extends AppCompatActivity {
                 openScreen(SuggestedRecipesActivity.class);
                 return true;
             }
-            /** Already on Settings. **/
+            /* Already on Settings. **/
             return true;
         });
     }
 
-    /** Brings an existing instance of the target screen to the front instead of stacking copies. **/
+    /* Brings an existing instance of the target screen to the front instead of stacking copies. **/
     private void openScreen(Class<?> target) {
         Intent intent = new Intent(this, target);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 
-    /** Position of a given day count in the spinner; falls back to the default (3 days). **/
+    /* Position of a given day count in the spinner; falls back to the default (3 days). **/
     private int indexOfDays(int days) {
         for (int i = 0; i < alertDayValues.length; i++) {
             if (alertDayValues[i] == days) {

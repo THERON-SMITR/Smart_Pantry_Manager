@@ -23,11 +23,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-/** Form for adding or editing a pantry ingredient. **/
+/* Form for adding or editing a pantry ingredient. **/
 public class AddEditIngredientActivity extends AppCompatActivity {
 
-    /** Intent extra holding the id of the item being edited (absent when adding). **/
+    /* Intent extra holding the id of the item being edited (absent when adding). **/
     public static final String EXTRA_ITEM_ID = "item_id";
 
     private static final long NO_ITEM = -1;
@@ -37,7 +38,6 @@ public class AddEditIngredientActivity extends AppCompatActivity {
 
     private TextInputLayout layoutName;
     private TextInputLayout layoutQuantity;
-    private TextInputLayout layoutExpiry;
     private TextInputEditText editName;
     private TextInputEditText editQuantity;
     private TextInputEditText editExpiry;
@@ -60,7 +60,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
 
         layoutName = findViewById(R.id.layoutName);
         layoutQuantity = findViewById(R.id.layoutQuantity);
-        layoutExpiry = findViewById(R.id.layoutExpiry);
+        TextInputLayout layoutExpiry = findViewById(R.id.layoutExpiry);
         editName = findViewById(R.id.editName);
         editQuantity = findViewById(R.id.editQuantity);
         editExpiry = findViewById(R.id.editExpiry);
@@ -68,7 +68,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
 
         setUpUnitSpinner();
 
-        /** If an id was passed in, we are editing: change the title and fill the form. **/
+        /* If an id was passed in, we are editing: change the title and fill the form. **/
         itemId = getIntent().getLongExtra(EXTRA_ITEM_ID, NO_ITEM);
         if (itemId != NO_ITEM) {
             MaterialToolbar toolbar = findViewById(R.id.toolbar);
@@ -95,11 +95,11 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         spinnerUnit.setAdapter(unitAdapter);
     }
 
-    /** Fills the form with the values of the item being edited. **/
+    /* Fills the form with the values of the item being edited. **/
     private void loadExistingItem() {
         PantryItem item = dbHelper.getPantryItemById(itemId);
         if (item == null) {
-            /** The item no longer exists. **/
+            /* The item no longer exists. **/
             finish();
             return;
         }
@@ -116,7 +116,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         spinnerUnit.setSelection(position);
     }
 
-    /** Date picker that writes the chosen date as yyyy-MM-dd (sorts correctly as text). **/
+    /* Date picker that writes the chosen date as yyyy-MM-dd (sorts correctly as text). **/
     private void showDatePicker() {
         Calendar today = Calendar.getInstance();
         new DatePickerDialog(this, (view, year, month, day) ->
@@ -125,16 +125,16 @@ public class AddEditIngredientActivity extends AppCompatActivity {
                 .show();
     }
 
-    /** Validates the form, then inserts (new) or updates (existing) the item. **/
+    /* Validates the form, then inserts (new) or updates (existing) the item. **/
     private void saveIngredient() {
         layoutName.setError(null);
         layoutQuantity.setError(null);
 
-        /** Names are stored lower-case and trimmed so "Tomato " and "tomato" match later. **/
-        String name = editName.getText().toString().trim().toLowerCase(Locale.ROOT);
-        String quantityText = editQuantity.getText().toString().trim();
+        /* Names are stored lower-case and trimmed so "Tomato " and "tomato" match later. **/
+        String name = Objects.requireNonNull(editName.getText()).toString().trim().toLowerCase(Locale.ROOT);
+        String quantityText = Objects.requireNonNull(editQuantity.getText()).toString().trim();
         String unit = spinnerUnit.getSelectedItem().toString();
-        String expiry = editExpiry.getText().toString().trim();
+        String expiry = Objects.requireNonNull(editExpiry.getText()).toString().trim();
 
         boolean valid = true;
 
@@ -147,7 +147,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         try {
             quantity = Double.parseDouble(quantityText);
         } catch (NumberFormatException e) {
-            /** Leave quantity at 0; it is rejected just below. **/
+            /* Leave quantity at 0; it is rejected just below. **/
         }
         if (quantity <= 0) {
             layoutQuantity.setError(getString(R.string.error_quantity_invalid));
@@ -158,7 +158,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
             return;
         }
 
-        /** Expiry is optional: store null when the field is empty. **/
+        /* Expiry is optional: store null when the field is empty. **/
         String expiryValue = expiry.isEmpty() ? null : expiry;
 
         boolean success;
@@ -170,7 +170,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
 
         if (success) {
             Toast.makeText(this, R.string.msg_saved, Toast.LENGTH_SHORT).show();
-            /** MainActivity reloads the list in onResume(). **/
+            /* MainActivity reloads the list in onResume(). **/
             finish();
         } else {
             Toast.makeText(this, R.string.msg_save_failed, Toast.LENGTH_SHORT).show();

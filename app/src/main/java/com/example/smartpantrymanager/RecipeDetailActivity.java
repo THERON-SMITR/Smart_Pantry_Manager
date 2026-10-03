@@ -14,12 +14,9 @@ import com.example.smartpantrymanager.models.Recipe;
 import com.example.smartpantrymanager.models.RecipeIngredient;
 import com.google.android.material.appbar.MaterialToolbar;
 
-/**
- * Shows the full ingredient list and method for one recipe, passed in as
- * EXTRA_RECIPE_ID from the Suggested Recipes screen.
- **/
+/* Shows the full ingredient list and method for one recipe **/
+@SuppressWarnings("ALL")
 public class RecipeDetailActivity extends AppCompatActivity {
-
     public static final String EXTRA_RECIPE_ID = "recipe_id";
 
     @Override
@@ -43,7 +40,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         TextView textMethod = findViewById(R.id.textMethod);
 
         if (recipe == null) {
-            /** The recipe no longer exists (should not normally happen - seeded data is not edited). **/
+            /* The recipe no longer exists (should not normally happen - seeded data is not edited). **/
             finish();
             return;
         }
@@ -53,7 +50,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         textMethod.setText(recipe.getMethod());
     }
 
-    /** Builds a "- 2 slice bread" style bullet list from the recipe's ingredients. **/
+    /* Builds a "- 2 slice bread" style bullet list from the recipe's ingredients. **/
     private String buildIngredientList(Recipe recipe) {
         StringBuilder builder = new StringBuilder();
         for (RecipeIngredient ingredient : recipe.getIngredients()) {
@@ -68,7 +65,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         return builder.toString().trim();
     }
 
-    /** 2.0 is shown as "2", 0.5 stays "0.5". **/
+    /* 2.0 is shown as "2", 0.5 stays "0.5". **/
     private String formatQuantity(double quantity) {
         if (quantity == Math.floor(quantity)) {
             return String.valueOf((long) quantity);

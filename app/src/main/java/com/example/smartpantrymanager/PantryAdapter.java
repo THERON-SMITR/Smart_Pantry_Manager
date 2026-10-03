@@ -1,5 +1,6 @@
 package com.example.smartpantrymanager;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/** Adapter used to create rows from the list of PantryItem objects **/
+/* Adapter used to create rows from the list of PantryItem objects **/
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryViewHolder> {
 
-    /** Lets the Activity decide what happens when a row is tapped or its bin is pressed. **/
+    /* Lets the Activity decide what happens when a row is tapped or its bin is pressed. **/
     public interface OnItemActionListener {
         void onEdit(PantryItem item);
 
@@ -37,7 +38,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
     private final List<PantryItem> items = new ArrayList<>();
     private final OnItemActionListener listener;
 
-    /** Expiry highlighting, taken from the Settings screen. **/
+    /* Expiry highlighting, taken from the Settings screen. **/
     private boolean alertsEnabled = false;
     private int alertDays = AppPreferences.DEFAULT_ALERT_DAYS;
 
@@ -45,13 +46,14 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         this.listener = listener;
     }
 
-    /** Sets whether expiring/expired rows get a coloured border, and how many days counts as "soon". **/
+    /* Sets whether expiring/expired rows get a coloured border, and how many days counts as "soon". **/
     public void setExpiryAlerts(boolean enabled, int days) {
         this.alertsEnabled = enabled;
         this.alertDays = days;
     }
 
-    /** Replaces the data and refreshes the list. **/
+    /* Replaces the data and refreshes the list. **/
+    @SuppressLint("NotifyDataSetChanged")
     public void setItems(List<PantryItem> newItems) {
         items.clear();
         items.addAll(newItems);
@@ -87,11 +89,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         holder.buttonDelete.setOnClickListener(v -> listener.onDelete(item));
     }
 
-    /**
-     * Red border = already expired, orange border = expires within the chosen number of
-     * days, no border otherwise. Rows are reused by the RecyclerView, so the border must
-     * always be set explicitly (including removed) or it would carry over to other rows.
-     **/
+    /* Red border = already expired, orange border = expires soon **/
     private void applyExpiryBorder(MaterialCardView card, String expiry) {
         int color = 0;
         boolean highlight = false;
@@ -118,24 +116,25 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         }
     }
 
-    /** Whole days from today until the expiry date (yyyy-MM-dd); negative if it has passed. **/
+    /* Whole days from today until the expiry date (yyyy-MM-dd); negative if it has passed. **/
     private Long daysUntil(String expiry) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             format.setLenient(false);
             Date expiryDate = format.parse(expiry);
 
-            /** Compare against the start of today so the time of day does not matter. **/
+            /* Compare against the start of today so the time of day does not matter. **/
             Calendar today = Calendar.getInstance();
             today.set(Calendar.HOUR_OF_DAY, 0);
             today.set(Calendar.MINUTE, 0);
             today.set(Calendar.SECOND, 0);
             today.set(Calendar.MILLISECOND, 0);
 
+            assert expiryDate != null;
             long difference = expiryDate.getTime() - today.getTimeInMillis();
             return Math.round(difference / (double) MILLIS_PER_DAY);
         } catch (ParseException e) {
-            /** Unreadable date: leave the row un-highlighted. **/
+            /* Unreadable date: leave the row un-highlighted. **/
             return null;
         }
     }
@@ -145,7 +144,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         return items.size();
     }
 
-    /** Normalize quantity values e.g 2.0 is shown as "2", 0.5 stays "0.5". **/
+    /* Normalize quantity values e.g 2.0 is shown as "2", 0.5 stays "0.5". **/
     private String formatQuantity(double quantity) {
         if (quantity == Math.floor(quantity)) {
             return String.valueOf((long) quantity);
@@ -153,7 +152,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         return String.valueOf(quantity);
     }
 
-    /** Normalize stings to be capitalized **/
+    /* Normalize stings to be capitalized **/
     private String capitalise(String text) {
         if (text == null || text.isEmpty()) {
             return "";
@@ -161,7 +160,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
-    /** The views of one row so they are only looked up once. **/
+    /* The views of one row so they are only looked up once. **/
     static class PantryViewHolder extends RecyclerView.ViewHolder {
         final TextView textName;
         final TextView textQuantity;

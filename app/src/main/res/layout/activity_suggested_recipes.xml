@@ -18,6 +18,27 @@
         app:title="@string/title_suggestions"
         app:titleTextColor="?attr/colorOnPrimary" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/suggestionsToolbar"
+        app:tabGravity="fill"
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_ready" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_almost_there" />
+    </com.google.android.material.tabs.TabLayout>
+
     <!-- The list of matching recipes (filled by RecipeAdapter). -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSuggestions"
@@ -28,7 +49,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/suggestionsToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
     <!-- Shown instead of the list when no recipe matches the current pantry. -->
     <TextView
@@ -43,7 +64,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/suggestionsToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
