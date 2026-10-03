@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Units offered on the Add/Edit ingredient form (same units the seeded recipes use). -->
-    <string-array name="unit_options">
+    <string-array name="unit_options_metric">
         <item>g</item>
         <item>kg</item>
         <item>ml</item>
         <item>l</item>
+        <item>unit</item>
+        <item>slice</item>
+        <item>clove</item>
+        <item>pinch</item>
+    </string-array>
+
+    <string-array name="unit_options_imperial">
+        <item>oz</item>
+        <item>lb</item>
+        <item>fl oz</item>
+        <item>cup</item>
         <item>unit</item>
         <item>slice</item>
         <item>clove</item>

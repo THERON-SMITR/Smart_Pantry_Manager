@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     private AppPreferences preferences;
     private MaterialSwitch switchExpiryAlerts;
     private Spinner spinnerAlertDays;
+    private RadioGroup radioGroupUnits;
     /** The day counts that line up with the spinner entries (res/values/arrays.xml). **/
     private int[] alertDayValues;
 
@@ -40,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         switchExpiryAlerts = findViewById(R.id.switchExpiryAlerts);
         spinnerAlertDays = findViewById(R.id.spinnerAlertDays);
+        radioGroupUnits = findViewById(R.id.radioGroupUnits);
 
         setUpAlertDaysSpinner();
         loadSavedSettings();
@@ -60,6 +63,12 @@ public class SettingsActivity extends AppCompatActivity {
         switchExpiryAlerts.setChecked(preferences.isExpiryAlertsEnabled());
         spinnerAlertDays.setSelection(indexOfDays(preferences.getExpiryAlertDays()));
         spinnerAlertDays.setEnabled(preferences.isExpiryAlertsEnabled());
+
+        if (AppPreferences.UNITS_IMPERIAL.equals(preferences.getUnits())) {
+            radioGroupUnits.check(R.id.radioImperial);
+        } else {
+            radioGroupUnits.check(R.id.radioMetric);
+        }
     }
 
     private void setUpListeners() {
@@ -78,6 +87,14 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 /** Nothing to do: the previous value stays saved. **/
+            }
+        });
+
+        radioGroupUnits.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioImperial) {
+                preferences.setUnits(AppPreferences.UNITS_IMPERIAL);
+            } else {
+                preferences.setUnits(AppPreferences.UNITS_METRIC);
             }
         });
     }

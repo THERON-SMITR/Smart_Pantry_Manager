@@ -51,4 +51,8 @@
     <string name="settings_alerts_title">Expiring-soon alerts</string>
     <string name="settings_alerts_summary">Highlight pantry items that are about to expire</string>
     <string name="settings_alert_days_label">Warn me before expiry</string>
+    <string name="settings_section_units">Units</string>
+    <string name="settings_units_summary">Units offered when adding ingredients</string>
+    <string name="settings_units_metric">Metric (g, kg, ml, l)</string>
+    <string name="settings_units_imperial">Imperial (oz, lb, fl oz, cup)</string>
 </resources>

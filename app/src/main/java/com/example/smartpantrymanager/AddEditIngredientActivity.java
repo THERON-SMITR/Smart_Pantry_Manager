@@ -18,7 +18,10 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /** Form for adding or editing a pantry ingredient. **/
@@ -39,6 +42,8 @@ public class AddEditIngredientActivity extends AppCompatActivity {
     private TextInputEditText editQuantity;
     private TextInputEditText editExpiry;
     private Spinner spinnerUnit;
+    private final List<String> unitOptions = new ArrayList<>();
+    private ArrayAdapter<String> unitAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +84,15 @@ public class AddEditIngredientActivity extends AppCompatActivity {
 
 
     private void setUpUnitSpinner() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.unit_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerUnit.setAdapter(adapter);
+        AppPreferences preferences = new AppPreferences(this);
+        int optionsId = AppPreferences.UNITS_IMPERIAL.equals(preferences.getUnits())
+                ? R.array.unit_options_imperial
+                : R.array.unit_options_metric;
+
+        unitOptions.addAll(Arrays.asList(getResources().getStringArray(optionsId)));
+        unitAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, unitOptions);
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerUnit.setAdapter(unitAdapter);
     }
 
     /** Fills the form with the values of the item being edited. **/
@@ -97,13 +107,13 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         editQuantity.setText(String.valueOf(item.getQuantity()));
         editExpiry.setText(item.getExpiryDate());
 
-        String[] units = getResources().getStringArray(R.array.unit_options);
-        for (int i = 0; i < units.length; i++) {
-            if (units[i].equals(item.getUnit())) {
-                spinnerUnit.setSelection(i);
-                break;
-            }
+        int position = unitOptions.indexOf(item.getUnit());
+        if (position == -1) {
+            unitOptions.add(item.getUnit());
+            unitAdapter.notifyDataSetChanged();
+            position = unitOptions.size() - 1;
         }
+        spinnerUnit.setSelection(position);
     }
 
     /** Date picker that writes the chosen date as yyyy-MM-dd (sorts correctly as text). **/

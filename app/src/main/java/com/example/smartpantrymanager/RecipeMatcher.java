@@ -32,9 +32,13 @@ public class RecipeMatcher {
     static {
         GRAMS.put("g", 1.0);
         GRAMS.put("kg", 1000.0);
+        GRAMS.put("oz", 28.35);
+        GRAMS.put("lb", 453.59);
 
         MILLILITRES.put("ml", 1.0);
         MILLILITRES.put("l", 1000.0);
+        MILLILITRES.put("fl oz", 29.57);
+        MILLILITRES.put("cup", 236.59);
     }
 
     /** Filters allRecipes down to only the ones the current pantry can make right now. **/
