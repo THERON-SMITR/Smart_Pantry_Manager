@@ -84,8 +84,9 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         if (expiry == null || expiry.isEmpty()) {
             holder.textExpiry.setText(R.string.no_expiry);
         } else {
-            holder.textExpiry.setText(holder.itemView.getContext()
-                    .getString(R.string.expires_on, expiry));
+            Long daysLeft = daysUntil(expiry);
+            int label = daysLeft != null && daysLeft < 0 ? R.string.expired_on : R.string.expires_on;
+            holder.textExpiry.setText(holder.itemView.getContext().getString(label, expiry));
         }
 
         applyExpiryBorder((MaterialCardView) holder.itemView, expiry);

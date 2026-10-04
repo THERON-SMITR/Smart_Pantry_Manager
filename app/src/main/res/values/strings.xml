@@ -14,6 +14,7 @@
     <string name="delete_message">Remove %1$s from your pantry?</string>
     <string name="delete">Delete</string>
     <string name="expires_on">Expires: %1$s</string>
+    <string name="expired_on">Expired: %1$s</string>
     <string name="no_expiry">No expiry date</string>
 
     <!-- Add / Edit ingredient screen -->
