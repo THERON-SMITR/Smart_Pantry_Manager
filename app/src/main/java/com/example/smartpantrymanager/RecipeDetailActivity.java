@@ -52,24 +52,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     /* Builds a "- 2 slice bread" style bullet list from the recipe's ingredients. **/
     private String buildIngredientList(Recipe recipe) {
+        String system = new AppPreferences(this).getUnits();
         StringBuilder builder = new StringBuilder();
         for (RecipeIngredient ingredient : recipe.getIngredients()) {
             builder.append("• ")
-                    .append(formatQuantity(ingredient.getQuantity()))
-                    .append(" ")
-                    .append(ingredient.getUnit())
+                    .append(UnitConverter.format(ingredient.getQuantity(), ingredient.getUnit(), system))
                     .append(" ")
                     .append(ingredient.getIngredientName())
                     .append("\n");
         }
         return builder.toString().trim();
-    }
-
-    /* 2.0 is shown as "2", 0.5 stays "0.5". **/
-    private String formatQuantity(double quantity) {
-        if (quantity == Math.floor(quantity)) {
-            return String.valueOf((long) quantity);
-        }
-        return String.valueOf(quantity);
     }
 }

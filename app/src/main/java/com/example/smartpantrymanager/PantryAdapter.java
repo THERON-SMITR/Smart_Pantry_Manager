@@ -41,9 +41,14 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
     /* Expiry highlighting, taken from the Settings screen. **/
     private boolean alertsEnabled = false;
     private int alertDays = AppPreferences.DEFAULT_ALERT_DAYS;
+    private String units = AppPreferences.UNITS_METRIC;
 
     public PantryAdapter(OnItemActionListener listener) {
         this.listener = listener;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 
     /* Sets whether expiring/expired rows get a coloured border, and how many days counts as "soon". **/
@@ -73,7 +78,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         PantryItem item = items.get(position);
 
         holder.textName.setText(capitalise(item.getName()));
-        holder.textQuantity.setText(formatQuantity(item.getQuantity()) + " " + item.getUnit());
+        holder.textQuantity.setText(UnitConverter.format(item.getQuantity(), item.getUnit(), units));
 
         String expiry = item.getExpiryDate();
         if (expiry == null || expiry.isEmpty()) {
@@ -142,14 +147,6 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    /* Normalize quantity values e.g 2.0 is shown as "2", 0.5 stays "0.5". **/
-    private String formatQuantity(double quantity) {
-        if (quantity == Math.floor(quantity)) {
-            return String.valueOf((long) quantity);
-        }
-        return String.valueOf(quantity);
     }
 
     /* Normalize stings to be capitalized **/

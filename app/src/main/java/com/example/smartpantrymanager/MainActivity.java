@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Re-read the Settings values each time, so a change on the Settings screen applies on return. **/
         adapter.setExpiryAlerts(preferences.isExpiryAlertsEnabled(), preferences.getExpiryAlertDays());
+        adapter.setUnits(preferences.getUnits());
         adapter.setItems(items);
 
         boolean empty = items.isEmpty();
